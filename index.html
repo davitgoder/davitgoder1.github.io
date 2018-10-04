@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<title>Potree Viewer</title>
+
+	<link rel="stylesheet" type="text/css" href="./build/potree/potree.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jquery-ui/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="./libs/perfect-scrollbar/css/perfect-scrollbar.css">
+	<link rel="stylesheet" type="text/css" href="./libs/openlayers3/ol.css">
+	<link rel="stylesheet" type="text/css" href="./libs/spectrum/spectrum.css">
+	<link rel="stylesheet" type="text/css" href="./libs/style/style.css">
+	<link rel="stylesheet" type="text/css" href="./libs/jstree/themes/mixed/style.css">
+</head>
+
+<body>
+	<script src="./libs/jquery/jquery-3.1.1.min.js"></script>
+	<script src="./libs/spectrum/spectrum.js"></script>
+	 <script src="./libs/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+	<script src="./libs/jquery-ui/jquery-ui.min.js"></script>
+	<script src="./libs/three.js/build/three.min.js"></script>
+	<script src="./libs/other/BinaryHeap.js"></script>
+	<script src="./libs/tween/tween.min.js"></script>
+	<script src="./libs/d3/d3.js"></script>
+	<script src="./libs/proj4/proj4.js"></script>
+	<script src="./libs/openlayers3/ol.js"></script>
+	<script src="./libs/i18next/i18next.js"></script>
+	<script src="./libs/jstree/jstree.js"></script>
+	<script src="./build/potree/potree.js"></script>
+	<script src="./libs/plasio/js/laslaz.js"></script>
+	<script src="./libs/other/OBJLoader.js"></script>
+	<script src="./libs/other/PLYLoader.js"></script>
+	
+	<!-- INCLUDE ADDITIONAL DEPENDENCIES HERE -->
+	<!-- INCLUDE SETTINGS HERE -->
+	
+	<div class="potree_container" style="position: absolute; width: 100%; height: 100%; left: 0px; top: 0px; ">
+		<div id="potree_render_area"></div>
+		<div id="potree_sidebar_container"> </div>
+	</div>
+	
+	<script>
+	
+		window.viewer = new Potree.Viewer(document.getElementById("potree_render_area"));
+		
+		viewer.setEDLEnabled(true);
+		viewer.setFOV(60);
+		viewer.setPointBudget(1*1000*1000);
+		viewer.loadSettingsFromURL();
+		
+		viewer.setDescription("Point cloud courtesy of <a target='_blank' href='https://www.sigeom.ch/'>sigeom sa</a>");
+		
+		viewer.loadGUI(() => {
+			viewer.setLanguage('en');
+			$("#menu_tools").next().show();
+			$("#menu_scene").next().show();
+			viewer.toggleSidebar();
+		});
+		
+		// Sigeom Poin Cloud
+		Potree.loadPointCloud("./pointclouds/vol_total/cloud.js", "sigeom.sa", function(e){
+			let scene = viewer.scene;
+			scene.addPointCloud(e.pointcloud);
+			
+			let material = e.pointcloud.material;
+			material.size = 1;
+			material.pointSizeType = Potree.PointSizeType.ADAPTIVE;
+
+			scene.view.position.set(589974.341, 231698.397, 986.146);
+			scene.view.lookAt(new THREE.Vector3(589851.587, 231428.213, 715.634));
+			// viewer.fitToScreen();
+		});
+
+		
+
+		// { // ANNOTATIONS
+			let scene = viewer.scene;
+			scene.annotations.add(new Potree.Annotation({
+				position: [589808.587, 231525.213, 771.334],
+				title: "Pasha Bank",
+				description: `
+				<img src="./resources/images/tree.png" class="pasha-bank-tree"/>
+				`
+			}));
+
+				scene.annotations.add(new Potree.Annotation({
+				position: [590041.587, 231525.213, 755.334],
+				title: "Good Green Moving",
+				description: `
+				<img src="./resources/images/ee.jpg" class="pasha-bank-tree"/>
+				`
+			}));
+
+				scene.annotations.add(new Potree.Annotation({
+				position: [589930.587, 231525.213, 755.334],
+				title: "pasha bank",
+				description: `
+				<img src="./resources/images/tree.png" class="pasha-bank-tree"/>
+				`
+			}));
+
+			scene.annotations.add(new Potree.Annotation({
+				position: [589697.587, 231525.213, 779.334],
+				title: "Good Green Moving",
+				description: `
+				<img src="./resources/images/ee2.png" class="pasha-bank-tree"/>
+				`
+			}));
+
+			scene.annotations.add(new Potree.Annotation({
+				position: [589880, 231423.83, 749.89],
+				title: `Pending... <img src="https://loading.io/spinners/fidget-spinner/lg.fidget-spinner.gif"/ style="height: 15px; padding-top:5px; width:15px;">`,
+				description: `
+				<h> Tree is pending</h>
+				`
+			}));
+
+			scene.annotations.add(new Potree.Annotation({
+				position: [589810, 231423.83, 749.89],
+				title: `Pending... <img src="https://loading.io/spinners/fidget-spinner/lg.fidget-spinner.gif"/ style="height: 15px; padding-top:5px; width:15px;">`,
+				description: `
+				<h> Tree is pending</h>
+				`
+			}));
+
+			scene.annotations.add(new Potree.Annotation({
+				position: [589750, 231423.83, 749.89],
+				title: `Pending... <img src="https://loading.io/spinners/fidget-spinner/lg.fidget-spinner.gif"/ style="height: 15px; padding-top:5px; width:15px;">`,
+				description: `
+				<h> Tree is pending</h>
+				`
+			}));
+
+			scene.annotations.add(new Potree.Annotation({
+				position: [589550, 231423.83, 759.89],
+				title: `Pending... <img src="https://loading.io/spinners/fidget-spinner/lg.fidget-spinner.gif"/ style="height: 15px; padding-top:5px; width:15px;">`,
+				description: `
+				<h> Tree is pending</h>
+				`
+			}));
+
+		{ // Load Textured bunny from obj
+			let manager = new THREE.LoadingManager();
+			let textureLoader = new THREE.TextureLoader( manager );
+
+
+			manager.onProgress = function ( item, loaded, total ) {
+				console.log( item, loaded, total );
+			};
+
+			let texture = textureLoader.load('./resources/textures/brick_pavement.jpg');
+			let onProgress = function ( xhr ) {
+				if ( xhr.lengthComputable ) {
+					let percentComplete = xhr.loaded / xhr.total * 100;
+					console.log( Math.round(percentComplete, 2) + '% downloaded' );
+				}
+			};
+			texture.wrapS = THREE.RepeatWrapping;
+			texture.wrapT = THREE.RepeatWrapping;
+
+			let onError = function ( xhr ) {};
+			let loader = new THREE.OBJLoader( manager );
+			loader.load('./resources/models/XE.obj', function ( object ) {
+				object.traverse( function ( child ) {
+					if ( child instanceof THREE.Mesh ) {
+						child.material.map = texture;
+					}
+				} );
+
+				object.position.set(589871.587, 231528.213, 725.634);
+				object.scale.multiplyScalar(500);
+				object.rotation.set(Math.PI / 2, Math.PI, 0)
+
+				viewer.scene.scene.add( object );
+
+				viewer.onGUILoaded(() => {
+					// Add entries to object list in sidebar
+					let tree = $(`#jstree_scene`);
+					let parentNode = "other";
+
+					let bunnyID = tree.jstree('create_node', parentNode, { 
+							text: "Bunny Textured", 
+							icon: './resources/icons/triangle.svg',
+							data: object
+						}, 
+						"last", false, false);
+					tree.jstree(object.visible ? "check_node" : "uncheck_node", bunnyID);
+
+					//tree.jstree("open_node", parentNode);
+				});
+
+			}, onProgress, onError );	
+		}
+		
+		
+	
+
+	</script>
+	
+	
+  </body>
+</html>
